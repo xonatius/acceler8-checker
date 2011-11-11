@@ -1,0 +1,11 @@
+Install:
+
+You should run ./build.sh script to compile ./checker
+
+Usage:
+
+Single check:
+./checker test_input test_output your_output
+
+Check all tests:
+./full_check.sh ./execute_solution [tests_directory]
