@@ -31,10 +31,10 @@ enum eErrCode
 /* Obtain the number of available CPU cores */
 unsigned int GetNumberOfCores(void);
 
-/* Initialize the array with pseudo-random values. pDst is a pointer to
-   the destination array of dstSize items. seed, a, b and modulo are parameters
-   for pseudo-random generations. Sum of any sub-array of the destination array
-   should not lead to int wraparound. */
+/* Initialize the matrix with pseudo-random values. pDst is a pointer to
+   the destination matrix of dstSize items. seed, a, b and modulo are parameters
+   for pseudo-random generations. Sum of any sub-matrix of the destination
+   matrix should not lead to int wraparound. */
 eErrCode InitMatrix(int *pDst, size_t dstSize,
                     int seed, int a, int b, int m);
 

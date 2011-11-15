@@ -30,7 +30,7 @@ struct TestOutput {
     int b2;
     // Area and sum
     int area;
-    int sum;
+    long long sum;
 };
 
 // Reads test case. Return true if ok.
@@ -43,7 +43,7 @@ bool read_input(FILE *finput, TestInput &input)
 // Reads test output. Return true if ok.
 bool read_output(FILE *foutput, TestOutput &output)
 {
-    return fscanf(foutput, "Case #%d: %d %d %d %d %d %d\n", &output.test, &output.a1, &output.a2, 
+    return fscanf(foutput, "Case #%d: %d %d %d %d %Ld %d\n", &output.test, &output.a1, &output.a2, 
                                                             &output.b1, &output.b2, &output.sum, &output.area) == 7;
 }
 
@@ -53,9 +53,9 @@ void try_fclose(FILE *f)
         fclose(f);
 }
 
-int get_sum(TestInput input, TestOutput output, int *data)
+long long get_sum(TestInput input, TestOutput output, int *data)
 {
-    int sum=0;
+    long long sum=0;
     for (int i=output.a1; i <= output.b1; i++)
         for (int j=output.a2; j <= output.b2; j++)
             sum += data[i*input.m + j];
@@ -79,29 +79,30 @@ int check(TestInput input, TestOutput correct, TestOutput checking)
     int *data = new int[input.n * input.m];
     InitMatrix(data, input.n * input.m, input.init_seed, input.a, input.b, input.c);
     // Checking sum
-    int tmp = 0;
+    long long tmp = 0LL;
     if ((tmp = get_sum(input, correct, data)) != correct.sum)
     {
-        printf("Sum in correct file mismatch: %d instead of %d\n", correct.sum, tmp);
+        printf("Sum in correct file mismatch: %Ld instead of %Ld\n", correct.sum, tmp);
         delete [] data;
         return 2;
     }
     if ((tmp = get_sum(input, checking, data)) != checking.sum)
     {
-        printf("ERROR: Sum in checking file mismatch: %d instead of %d\n", checking.sum, tmp);
+        printf("ERROR: Sum in checking file mismatch: %Ld instead of %Ld\n", checking.sum, tmp);
         delete [] data;
         return 1;
     }
     delete [] data;
     if (correct.sum != checking.sum)
     {
-        printf("ERROR: Sum in checking file and in correct file mismatch. Correct:%d. Checking:%d\n", correct.sum, checking.sum);
+        printf("ERROR: Sum in checking file and in correct file mismatch. Correct:%Ld. Checking:%Ld\n", correct.sum, checking.sum);
         return 1;
     }
     // Checking area
-    if (checking.area != (tmp = get_area(checking)))
+    int area_tmp;
+    if (checking.area != (area_tmp = get_area(checking)))
     {
-        printf("ERROR: Area in checking file mismach. Correct:%d. Checking:%d\n", tmp, checking.area);
+        printf("ERROR: Area in checking file mismach. Correct:%d. Checking:%d\n", area_tmp, checking.area);
         return 1;
     }
     printf("Ok!\n");

@@ -49,7 +49,7 @@ eErrCode InitMatrix(int *pDst, size_t dstSize,
                     int seed, int a, int b, int m)
 {
     size_t i;
-    int sum = 0;
+    long long sum = 0;     /* updated line */
     int mean, remainder;
 
     /* check error(s) */
@@ -57,8 +57,14 @@ eErrCode InitMatrix(int *pDst, size_t dstSize,
     {
         return ERR_NULL_POINTER;
     }
+    /* updated lines */
+    if ((0 == dstSize) ||
+        (0 == m))
+    {
+        return ERR_OUT_OF_BOUND;
+    }
 
-    /* initialize the destination array */
+    /* initialize the destination matrix */
     for (i = 0; i < dstSize; i += 1)
     {
         seed = PRNG(seed, a, b, m);
@@ -69,12 +75,11 @@ eErrCode InitMatrix(int *pDst, size_t dstSize,
     }
 
     /* calculate the mean value. Avoid float logic when making rounding. */
-    mean = sum / (signed) dstSize;
-    remainder = sum - mean * (signed) dstSize;
-    mean += (remainder * 2 > (signed) dstSize) ? (1) : (0);
-    mean -= (remainder * 2 < -(signed) dstSize) ? (1) : (0);
+    mean = (int) (sum / (long long) dstSize); /* updated line */
+    remainder = (int) (sum % (long long) dstSize); /* updated line */
+    mean += (remainder * 2 > (signed) dstSize) ? (1) : (0); /* updated line */
 
-    /* correct the array to make sum of all elements near to zero */
+    /* correct the matrix to make sum of all elements near to zero */
     for (i = 0; i < dstSize; i += 1)
     {
         pDst[i] -= mean;
