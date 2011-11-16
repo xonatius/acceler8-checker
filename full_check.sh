@@ -32,7 +32,7 @@ fi
 
 
 if [ "$2" != "" ]; then
-    TESTDIR=$2
+    TEST_DIR=$2
 fi
 
 for inp in $( echo $TEST_DIR"/*.input" );
